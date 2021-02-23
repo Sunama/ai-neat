@@ -41,10 +41,10 @@ module Ai
 
         if layer.activationfunc != :softmax
           layer.nodes.each do |node|
-            node.value = Ai::Neat::activationfunc(layer.activationfunc, node.value)
+            node.value = Ai::Neat.activationfunc(layer.activationfunc, node.value)
           end
         else
-          layer.values(Ai::Neat::activationfunc(layer.activationfunc, layer.values()))
+          layer.values(Ai::Neat.activationfunc(layer.activationfunc, layer.values()))
         end
       end
 

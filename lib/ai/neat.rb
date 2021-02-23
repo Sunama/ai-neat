@@ -31,7 +31,7 @@ module Ai
       def mutate
         @creatures.each do |creature|
           genes = creature.flatten_genes
-          genes = mutation(@mutation_method, @mutation_rate)
+          genes = Ai::Neat.mutate(@mutation_method, genes, @mutation_rate)
           creature.flatten_genes = genes
         end
       end
@@ -42,7 +42,7 @@ module Ai
           parent_x = pick_creature
           parent_y = pick_creature
 
-          genes = Ai::Neat::crossover(parent_x.flatten_genes, parent_y.flatten_genes)
+          genes = Ai::Neat.crossover(@crossover_method, parent_x.flatten_genes, parent_y.flatten_genes)
           creature.flatten_genes = genes
         end
       end
@@ -114,7 +114,7 @@ module Ai
       end
 
       def export(index = nil)
-        
+
       end
 
       def import(data)
