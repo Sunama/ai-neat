@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Sukrit Sunama"]
   spec.email         = ["sunama.sukrit@gmail.com"]
 
-  spec.summary       = "NeuroEvolution of Augmenting Topologies (NEAT) gem."
-  spec.description   = "NeuroEvolution of Augmenting Topologies (NEAT) gem."
+  spec.summary       = "NeuroEvolution of Augmenting Topologies (NEAT) ruby gem."
+  spec.description   = "NeuroEvolution of Augmenting Topologies (NEAT) ruby gem."
   spec.homepage      = "https://github.com/Sunama/ai-neat"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
