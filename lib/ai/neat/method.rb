@@ -1,6 +1,6 @@
 module Ai
   module Neat
-    def activationfunc(method, value)
+    def self.activationfunc(method, value)
       case method
       when :relu
         value > 0 ? value : 0
@@ -26,7 +26,7 @@ module Ai
       end
     end
 
-    def crossover(method, genes_x, genes_y)
+    def self.crossover(method, genes_x, genes_y)
       case method
       when :random
         genes = []
@@ -48,7 +48,7 @@ module Ai
       end
     end
 
-    def mutate(method, genes, rate)
+    def self.mutate(method, genes, rate)
       case method
       when :random
         genes.each do |gene|

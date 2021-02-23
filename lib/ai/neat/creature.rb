@@ -4,7 +4,7 @@ module Ai
       attr_accessor :network, :fitness, :score
 
       def initialize(models)
-        @network = Network.init(models)
+        @network = Network.new(models)
         @fitness = 0
         @score = 0
       end
@@ -12,14 +12,14 @@ module Ai
       def flatten_genes
         genes = []
 
-        @network.layers.each do |layer|
-          layer.nodes.each do |node|
+        (0..(@network.layers.count - 2)).each do |i|
+          @network.layers[i].nodes.each do |node|
             node.weights.each do |weight|
               genes.push(weight)
             end
           end
 
-          layer.bias.weights.each do |weight|
+          @network.layers[i].bias.weights.each do |weight|
             genes.push(weight)
           end
         end
@@ -32,13 +32,13 @@ module Ai
           @network.layers[i].nodes.each do |node|
             node.weights.each do |weight|
               weight = genes.first
-              genes.shift!
+              genes.shift
             end
           end
 
           @network.layers[i].bias.weights.each do |weight|
             weight = genes.first
-            genes.shift!
+            genes.shift
           end
         end
       end
@@ -57,9 +57,9 @@ module Ai
 
       def decision
         index = -1
-        max = -Infinity
+        max = -Float::INFINITY
 
-        (0..(@network.layers.last.nodes.count)).each do |i|
+        (0..(@network.layers.last.nodes.count - 1)).each do |i|
           if @network.layers.last.nodes[i].value > max
             max = @network.layers.last.nodes[i].value
             index = i

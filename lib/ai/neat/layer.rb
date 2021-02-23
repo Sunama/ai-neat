@@ -10,10 +10,10 @@ module Ai
         @activationfunc = activationfunc
 
         (1..node_count).each do |i|
-          @nodes.push(Node.init())
+          @nodes.push(Node.new())
         end
 
-        @bias = Node.init() if @node_type != :output
+        @bias = Node.new() if @node_type != :output
       end
 
       def connect(count)
@@ -44,7 +44,7 @@ module Ai
             node.value = Ai::Neat.activationfunc(layer.activationfunc, node.value)
           end
         else
-          layer.values(Ai::Neat.activationfunc(layer.activationfunc, layer.values()))
+          layer.values = Ai::Neat.activationfunc(layer.activationfunc, layer.values())
         end
       end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "neat/version"
+Dir[File.dirname(__FILE__) + '/neat/*.rb'].each { |file| require file }
 
 module Ai
   module Neat
@@ -11,12 +11,12 @@ module Ai
       def initialize(config)
         @creatures = []
         @old_creatures = []
-        @models = config.models
+        @models = config[:models]
         @export_model = []
-        @population_size = config.population_size || 500
-        @mutation_rate = config.mutation_rate || 0.05
-        @crossover_method = config.crossover_method || :random
-        @mutation_method = config.mutation_method || :random
+        @population_size = config[:population_size] || 500
+        @mutation_rate = config[:mutation_rate] || 0.05
+        @crossover_method = config[:crossover_method] || :random
+        @mutation_method = config[:mutation_method] || :random
         @generation = 0
 
         @models.each do |model|
@@ -24,7 +24,7 @@ module Ai
         end
 
         (1..@population_size).each do |i|
-          @creatures.push(Creature.init(@models))
+          @creatures.push(Creature.new(@models))
         end
       end
 
@@ -48,7 +48,7 @@ module Ai
       end
 
       def pick_creature
-        sum = 0
+        sum = 0.0
 
         @old_creatures.each do |creature|
           sum += creature.score ^ 2
@@ -60,6 +60,7 @@ module Ai
 
         index = 0
         r = rand()
+        
         while r > 0
           r -= @old_creatures[index].fitness
           index += 1
@@ -88,12 +89,13 @@ module Ai
 
       def best_creature
         index = 0
-        max = -Infinity
+        max = -Float::INFINITY
 
         (0..(@old_creatures.count - 1)).each do |i|
           if @old_creatures[i].fitness > max
             max = @old_creatures[i].fitness
             index = i
+          end
         end
 
         index

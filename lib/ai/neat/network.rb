@@ -7,7 +7,7 @@ module Ai
         @layers = []
 
         models.each do |model|
-          @layers.push(Layer.init(model.node_count, model.node_type, model.activationfunc))
+          @layers.push(Layer.new(model[:node_count], model[:node_type], model[:activationfunc]))
         end
 
         (0..(@layers.count - 2)).each do |i|
