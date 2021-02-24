@@ -1,8 +1,6 @@
 # Ai::Neat
 
-This gem is base on [NEAT-JS](https://github.com/ExtensionShoe/NEAT-JS).
-
-TODO: Delete this and the text above, and describe your gem
+This gem is base on [NEAT-JS](https://github.com/ExtensionShoe/NEAT-JS). That have the main purpose to convert the code from javascript to ruby.
 
 ## Installation
 
