@@ -23,12 +23,18 @@ module Ai
         end
       end
 
-      def mutate
-        @creatures.each do |creature|
-          genes = creature.flatten_genes
-          genes = Ai::Neat.mutate(@mutation_method, genes, @mutation_rate)
-          creature.flatten_genes = genes
+      def best_creature
+        index = 0
+        max = -Float::INFINITY
+
+        (0..(@old_creatures.count - 1)).each do |i|
+          if @old_creatures[i].fitness > max
+            max = @old_creatures[i].fitness
+            index = i
+          end
         end
+
+        index
       end
 
       def crossover
@@ -38,6 +44,63 @@ module Ai
           parent_y = pick_creature
 
           genes = Ai::Neat.crossover(@crossover_method, parent_x.flatten_genes, parent_y.flatten_genes)
+          creature.flatten_genes = genes
+        end
+      end
+
+      def decisions
+        result = []
+
+        @creatures.each do |creature|
+          result.push(creature.decision)
+        end
+
+        result
+      end
+
+      def do_gen
+        crossover
+        mutate
+        @generation += 1
+      end
+
+      def export
+        data = {
+          models: @models,
+          creatures: []
+        }
+
+        @creatures.each do |creature|
+          data[:creatures].push(creature.flatten_genes)
+        end
+
+        data
+      end
+
+      def feed_forward
+        @creatures.each(&:feed_forward)
+      end
+
+      def import(data)
+        @models = data[:models]
+
+        @creatures = []
+        @population_size = 0
+
+        data[:creatures].each do |genes|
+          creature = Creature.new(@models)
+          creature.flatten_genes = genes
+
+          @creatures.push(creature)
+
+          @population_size += 1
+        end
+      end
+
+      def mutate
+        @creatures.each do |creature|
+          genes = creature.flatten_genes
+          genes = Ai::Neat.mutate(@mutation_method, genes, @mutation_rate)
           creature.flatten_genes = genes
         end
       end
@@ -70,71 +133,8 @@ module Ai
         @creatures[index].score = fitness
       end
 
-      def feed_forward
-        @creatures.each(&:feed_forward)
-      end
-
-      def do_gen
-        crossover
-        mutate
-        @generation += 1
-      end
-
-      def best_creature
-        index = 0
-        max = -Float::INFINITY
-
-        (0..(@old_creatures.count - 1)).each do |i|
-          if @old_creatures[i].fitness > max
-            max = @old_creatures[i].fitness
-            index = i
-          end
-        end
-
-        index
-      end
-
-      def decisions
-        result = []
-
-        @creatures.each do |creature|
-          result.push(creature.decision)
-        end
-
-        result
-      end
-
       def set_inputs(inputs, index)
         @creatures[index].inputs = inputs
-      end
-
-      def export
-        data = {
-          models: @models,
-          creatures: []
-        }
-
-        @creatures.each do |creature|
-          data[:creatures].push(creature.flatten_genes)
-        end
-
-        data
-      end
-
-      def import(data)
-        @models = data[:models]
-
-        @creatures = []
-        @population_size = 0
-
-        data[:creatures].each do |genes|
-          creature = Creature.new(@models)
-          creature.flatten_genes = genes
-
-          @creatures.push(creature)
-
-          @population_size += 1
-        end
       end
     end
   end

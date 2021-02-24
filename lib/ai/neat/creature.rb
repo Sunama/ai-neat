@@ -11,6 +11,24 @@ module Ai
         @score = 0
       end
 
+      def decision
+        index = -1
+        max = -Float::INFINITY
+
+        (0..(@network.layers.last.nodes.count - 1)).each do |i|
+          if @network.layers.last.nodes[i].value > max
+            max = @network.layers.last.nodes[i].value
+            index = i
+          end
+        end
+
+        index
+      end
+
+      def feed_forward
+        @network.feed_forward
+      end
+
       def flatten_genes
         genes = []
 
@@ -32,21 +50,17 @@ module Ai
       def flatten_genes=(genes)
         (0..(@network.layers.count - 2)).each do |i|
           @network.layers[i].nodes.each do |node|
-            node.weights.each do |_weight|
+            node.weights.each do |weight|
               weight = genes.first
               genes.shift
             end
           end
 
-          @network.layers[i].bias.weights.each do |_weight|
+          @network.layers[i].bias.weights.each do |weight|
             weight = genes.first
             genes.shift
           end
         end
-      end
-
-      def feed_forward
-        @network.feed_forward
       end
 
       def inputs
@@ -55,20 +69,6 @@ module Ai
 
       def inputs=(values)
         @network.layers.first.values = values
-      end
-
-      def decision
-        index = -1
-        max = -Float::INFINITY
-
-        (0..(@network.layers.last.nodes.count - 1)).each do |i|
-          if @network.layers.last.nodes[i].value > max
-            max = @network.layers.last.nodes[i].value
-            index = i
-          end
-        end
-
-        index
       end
     end
   end
