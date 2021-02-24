@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe Ai::Neat do
-  it 'has a version number' do
+  it "has a version number" do
     expect(Ai::Neat::VERSION).not_to be nil
   end
 
-  it 'config' do
+  it "config" do
     config = {
       models: [
         { node_count: 5, node_type: :input },
@@ -31,8 +31,8 @@ RSpec.describe Ai::Neat do
     expect(neat.creatures.first.network.layers.last.bias).to be_nil
   end
 
-  describe 'test' do
-    it '2 layer (input & output)' do
+  describe "test" do
+    it "2 layer (input & output)" do
       population_size = 100
 
       config = {
@@ -48,16 +48,16 @@ RSpec.describe Ai::Neat do
 
       neat = Ai::Neat::Neat.new(config)
 
-      scores = population_size.times.map{ 0 }
+      scores = population_size.times.map { 0 }
       first_score = 0
 
-      #Generation
+      # Generation
       100.times.each do |gen|
-        scores = population_size.times.map{ 0 }
+        scores = population_size.times.map { 0 }
 
-        #play
+        # play
         50.times.each do
-          inputs = 5.times.map{ rand(-1.0..1.0) }
+          inputs = 5.times.map { rand(-1.0..1.0) }
 
           (0..(scores.count - 1)).each do |i|
             neat.set_inputs(inputs, i)
@@ -102,7 +102,7 @@ RSpec.describe Ai::Neat do
       expect(scores[neat.best_creature]).to be > first_score
     end
 
-    it '3 layer (input & middle & output)' do
+    it "3 layer (input & middle & output)" do
       population_size = 100
 
       config = {
@@ -119,16 +119,16 @@ RSpec.describe Ai::Neat do
 
       neat = Ai::Neat::Neat.new(config)
 
-      scores = population_size.times.map{ 0 }
+      scores = population_size.times.map { 0 }
       first_score = 0
 
-      #Generation
+      # Generation
       100.times.each do |gen|
-        scores = population_size.times.map{ 0 }
+        scores = population_size.times.map { 0 }
 
-        #play
+        # play
         50.times.each do
-          inputs = 5.times.map{ rand(-1.0..1.0) }
+          inputs = 5.times.map { rand(-1.0..1.0) }
 
           (0..(scores.count - 1)).each do |i|
             neat.set_inputs(inputs, i)
@@ -174,8 +174,8 @@ RSpec.describe Ai::Neat do
     end
   end
 
-  describe 'import/export' do
-    it 'import/export' do
+  describe "import/export" do
+    it "import/export" do
       population_size = 100
 
       config = {
@@ -191,16 +191,16 @@ RSpec.describe Ai::Neat do
 
       neat = Ai::Neat::Neat.new(config)
 
-      scores = population_size.times.map{ 0 }
+      scores = population_size.times.map { 0 }
       first_score = 0
 
-      #Generation
+      # Generation
       100.times.each do |gen|
-        scores = population_size.times.map{ 0 }
+        scores = population_size.times.map { 0 }
 
-        #play
+        # play
         50.times.each do
-          inputs = 5.times.map{ rand(-1.0..1.0) }
+          inputs = 5.times.map { rand(-1.0..1.0) }
 
           (0..(scores.count - 1)).each do |i|
             neat.set_inputs(inputs, i)

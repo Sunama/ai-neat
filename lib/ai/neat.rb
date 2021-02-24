@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-Dir[File.dirname(__FILE__) + '/neat/*.rb'].each { |file| require file }
+Dir[File.dirname(__FILE__) + "/neat/*.rb"].sort.each { |file| require file }
 
 module Ai
   module Neat
     class Neat
       attr_accessor :creatures, :old_creatures, :models, :population_size, :mutation_rate,
-        :crossover_method, :mutation_method, :generation
-      
+                    :crossover_method, :mutation_method, :generation
+
       def initialize(config)
         @creatures = []
         @old_creatures = []
@@ -18,7 +18,7 @@ module Ai
         @mutation_method = config[:mutation_method] || :random
         @generation = 0
 
-        (1..@population_size).each do |i|
+        (1..@population_size).each do |_i|
           @creatures.push(Creature.new(@models))
         end
       end
@@ -54,9 +54,9 @@ module Ai
         end
 
         index = 0
-        r = rand()
-        
-        while r > 0
+        r = rand
+
+        while r.positive?
           r -= @old_creatures[index].fitness
           index += 1
         end
@@ -71,14 +71,12 @@ module Ai
       end
 
       def feed_forward
-        @creatures.each do |creature|
-          creature.feed_forward
-        end
+        @creatures.each(&:feed_forward)
       end
 
       def do_gen
-        crossover()
-        mutate()
+        crossover
+        mutate
         @generation += 1
       end
 
@@ -100,7 +98,7 @@ module Ai
         result = []
 
         @creatures.each do |creature|
-          result.push(creature.decision())
+          result.push(creature.decision)
         end
 
         result
@@ -119,7 +117,7 @@ module Ai
         @creatures.each do |creature|
           data[:creatures].push(creature.flatten_genes)
         end
-        
+
         data
       end
 

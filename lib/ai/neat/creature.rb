@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ai
   module Neat
     class Creature
@@ -30,13 +32,13 @@ module Ai
       def flatten_genes=(genes)
         (0..(@network.layers.count - 2)).each do |i|
           @network.layers[i].nodes.each do |node|
-            node.weights.each do |weight|
+            node.weights.each do |_weight|
               weight = genes.first
               genes.shift
             end
           end
 
-          @network.layers[i].bias.weights.each do |weight|
+          @network.layers[i].bias.weights.each do |_weight|
             weight = genes.first
             genes.shift
           end

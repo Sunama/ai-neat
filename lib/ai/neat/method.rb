@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 module Ai
   module Neat
     def self.activationfunc(method, value)
       case method
       when :relu
-        value > 0 ? value : 0
+        value.positive? ? value : 0
       when :tanh
         Math.tanh(value)
       when :sigmoid
         (1 / (1 + Math.exp(-value)))
       when :leaky_relu
-        value > 0 ? value : (value * 0.01)
+        value.positive? ? value : (value * 0.01)
       when :softmax
         sum = 0
         result = []
@@ -32,13 +34,13 @@ module Ai
         genes = []
 
         (0..(genes_x.count - 1)).each do |i|
-          rand() < 0.5 ? genes.push(genes_x[i]) : genes.push(genes_y[i])
+          rand < 0.5 ? genes.push(genes_x[i]) : genes.push(genes_y[i])
         end
 
         genes
       when :slice
-        start_index = (rand() * genes_x.count).to_i
-        end_index = (rand() * (genes_x.count - start_index + 2)).to_i + start_index + 1
+        start_index = (rand * genes_x.count).to_i
+        end_index = (rand * (genes_x.count - start_index + 2)).to_i + start_index + 1
         cut_genes = genes_x[start_index..end_index]
 
         genes = genes_y.clone
@@ -52,15 +54,15 @@ module Ai
 
     def self.mutate(method, genes, rate)
       genes = genes.clone
-      
+
       case method
       when :random
         (0..(genes.count - 1)).each do |i|
-          genes[i] = rand(-1.0..1.0) if rand() < rate
+          genes[i] = rand(-1.0..1.0) if rand < rate
         end
       when :edit
         (0..(genes.count - 1)).each do |i|
-          genes[i] += rand(-0.5..0.5) if rand() < rate
+          genes[i] += rand(-0.5..0.5) if rand < rate
         end
       end
 

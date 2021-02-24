@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Ai
   module Neat
     class Layer
@@ -9,11 +11,11 @@ module Ai
         @node_type = node_type
         @activationfunc = activationfunc
 
-        (1..node_count).each do |i|
-          @nodes.push(Node.new())
+        (1..node_count).each do |_i|
+          @nodes.push(Node.new)
         end
 
-        @bias = Node.new() if @node_type != :output
+        @bias = Node.new if @node_type != :output
       end
 
       def connect(count)
@@ -21,7 +23,7 @@ module Ai
           node.initWeights(count)
         end
 
-        @bias.initWeights(count) if @bias
+        @bias&.initWeights(count)
       end
 
       def feed_forward(layer)
@@ -44,7 +46,7 @@ module Ai
             node.value = Ai::Neat.activationfunc(layer.activationfunc, node.value)
           end
         else
-          layer.values = Ai::Neat.activationfunc(layer.activationfunc, layer.values())
+          layer.values = Ai::Neat.activationfunc(layer.activationfunc, layer.values)
         end
       end
 
