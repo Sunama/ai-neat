@@ -41,22 +41,26 @@ module Ai
         end_index = (rand() * (genes_x.count - start_index + 2)).to_i + start_index + 1
         cut_genes = genes_x[start_index..end_index]
 
-        genes_y.slice!(start_index..end_index)
-        genes_y.concat(cut_genes)
+        genes = genes_y.clone
 
-        genes_y
+        genes.slice!(start_index..end_index)
+        genes.concat(cut_genes)
+
+        genes
       end
     end
 
     def self.mutate(method, genes, rate)
+      genes = genes.clone
+      
       case method
       when :random
-        genes.each do |gene|
-          gene = rand(-1.0..1.0) if rand() < rate
+        (0..(genes.count - 1)).each do |i|
+          genes[i] = rand(-1.0..1.0) if rand() < rate
         end
       when :edit
-        genes.each do |gene|
-          gene += rand(0.0..0.5) if rand() < rate
+        (0..(genes.count - 1)).each do |i|
+          genes[i] += rand(-0.5..0.5) if rand() < rate
         end
       end
 
