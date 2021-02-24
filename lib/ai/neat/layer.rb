@@ -31,7 +31,7 @@ module Ai
 
         @nodes.each do |node|
           (0..(node.weights.count - 1)).each do |w|
-            layer.nodes[w].value = node.value * node.weights[w]
+            layer.nodes[w].value += node.value * node.weights[w]
           end
         end
 
