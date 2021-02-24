@@ -5,23 +5,18 @@ Dir[File.dirname(__FILE__) + '/neat/*.rb'].each { |file| require file }
 module Ai
   module Neat
     class Neat
-      attr_accessor :creatures, :old_creatures, :models, :export_model, :population_size, :mutation_rate,
+      attr_accessor :creatures, :old_creatures, :models, :population_size, :mutation_rate,
         :crossover_method, :mutation_method, :generation
       
       def initialize(config)
         @creatures = []
         @old_creatures = []
         @models = config[:models]
-        @export_model = []
         @population_size = config[:population_size] || 500
         @mutation_rate = config[:mutation_rate] || 0.05
         @crossover_method = config[:crossover_method] || :random
         @mutation_method = config[:mutation_method] || :random
         @generation = 0
-
-        @models.each do |model|
-          @export_model.push(model.clone)
-        end
 
         (1..@population_size).each do |i|
           @creatures.push(Creature.new(@models))
@@ -115,12 +110,33 @@ module Ai
         @creatures[index].inputs = inputs
       end
 
-      def export(index = nil)
+      def export
+        data = {
+          models: @models,
+          creatures: []
+        }
 
+        @creatures.each do |creature|
+          data[:creatures].push(creature.flatten_genes)
+        end
+        
+        data
       end
 
       def import(data)
+        @models = data[:models]
 
+        @creatures = []
+        @population_size = 0
+
+        data[:creatures].each do |genes|
+          creature = Creature.new(@models)
+          creature.flatten_genes = genes
+
+          @creatures.push(creature)
+
+          @population_size += 1
+        end
       end
     end
   end
