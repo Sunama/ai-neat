@@ -20,6 +20,83 @@ Or install it yourself as:
 
 ## Usage
 
+1. Get started with config
+
+```
+config = {
+  models: [
+    { node_count: 5, node_type: :input },
+    { node_count: 3, node_type: :output, activationfunc: :softmax }
+  ],
+  mutation_rate: 0.1,
+  crossover_method: :random,
+  mutation_method: :random,
+  population_size: population_size
+}
+```
+
+`models` parameter are array of layers of NEAT at least their are needed 2 layers are `node_type` = `:input` and `:output` but it's possible to add any `:middle` layer between of them.
+
+```
+  models: [
+    { node_count: 5, node_type: :input },
+    { node_count: 5, node_type: :inpu, activationfunc: :softmax },
+    { node_count: 3, node_type: :output, activationfunc: :softmax }
+  ]
+```
+
+And `activationfunc` are needed if that layer is not output layer. Current supported `activationfunc` are `:relu`, `:tanh`, `:sigmoid`, `:leaky_relu`, `:softmax`.
+
+Supported `crossover_method` are `:random` and `:slice`.
+
+Supported `mutation_method` are `:random` and `:edit`.
+
+2. Initiate `Neat` Class from previous config
+
+```
+neat = Ai::Neat::Neat.new(config)
+```
+
+3. Set generation loop
+
+4. Set inputs array equal to number of `node_type` = `:input` to each Creature `[i]`
+
+```
+neat.set_inputs(inputs, i)
+```
+
+If your simmulation have various creature life time like a gameover you can skip to set inputs that creature.
+
+5. When set inputs compleated
+
+```
+neat.feed_forward
+```
+
+6. Get decisions for each creature in array
+
+```
+decisions = neat.decisions
+```
+
+returned `decisions` value are array of integer that started from `0` to `node_count - 1` of `:output` layer.
+
+7. Finish generation
+
+```
+neat.do_gen
+```
+
+And you can get best creature result by
+
+```
+neat.best_creature
+```
+
+This function will return index of best creature in lastest generation.
+
+## Example
+
 ```
 population_size = 100
 
@@ -48,30 +125,30 @@ scores = population_size.times.map { 0 }
     inputs = 5.times.map { rand(-1.0..1.0) }
 
     (0..(scores.count - 1)).each do |i|
-    neat.set_inputs(inputs, i)
+        neat.set_inputs(inputs, i)
     end
 
     neat.feed_forward
     decisions = neat.decisions
 
     (0..(scores.count - 1)).each do |i|
-    if inputs.last > 0
-        case decisions[i]
-        when 0
-        scores[i] += 1
-        when 1
-        scores[i] -= 1
+        if inputs.last > 0
+            case decisions[i]
+            when 0
+            scores[i] += 1
+            when 1
+            scores[i] -= 1
+            end
+        else
+            case decisions[i]
+            when 0
+            scores[i] -= 1
+            when 1
+            scores[i] += 1
+            end
         end
-    else
-        case decisions[i]
-        when 0
-        scores[i] -= 1
-        when 1
-        scores[i] += 1
-        end
-    end
 
-    scores[i] = 0 if scores[i] < 0
+        scores[i] = 0 if scores[i] < 0
     end
 end
 
