@@ -38,13 +38,13 @@ module Ai
       end
 
       def crossover
-        @creatures.each do |creature|
+        (0..@population_size - 1).each do |i|
           @old_creatures = @creatures.clone
           parent_x = pick_creature
           parent_y = pick_creature
 
           genes = Ai::Neat.crossover(@crossover_method, parent_x.flatten_genes, parent_y.flatten_genes)
-          creature.flatten_genes = genes
+          @creatures[i].flatten_genes = genes
         end
       end
 
@@ -98,10 +98,10 @@ module Ai
       end
 
       def mutate
-        @creatures.each do |creature|
-          genes = creature.flatten_genes
+        (0..@population_size - 1).each do |i|
+          genes = @creatures[i].flatten_genes
           genes = Ai::Neat.mutate(@mutation_method, genes, @mutation_rate)
-          creature.flatten_genes = genes
+          @creatures[i].flatten_genes = genes
         end
       end
 
