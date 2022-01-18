@@ -109,11 +109,11 @@ module Ai
         sum = 0.0
 
         @old_creatures.each do |creature|
-          sum += creature.score ^ 2
+          sum += creature.score ** 2
         end
 
         @old_creatures.each do |creature|
-          creature.fitness = (creature.score ^ 2) / sum
+          creature.fitness = (creature.score ** 2) / sum
         end
 
         index = 0
