@@ -3,7 +3,7 @@
 module Ai
   module Neat
     def self.activationfunc(method, value)
-      case method
+      case method.to_sym
       when :relu
         value.positive? ? value : 0
       when :tanh
@@ -29,7 +29,7 @@ module Ai
     end
 
     def self.crossover(method, genes_x, genes_y)
-      case method
+      case method.to_sym
       when :random
         genes = []
 
@@ -55,7 +55,7 @@ module Ai
     def self.mutate(method, genes, rate)
       genes = genes.clone
 
-      case method
+      case method.to_sym
       when :random
         (0..(genes.count - 1)).each do |i|
           genes[i] = rand(-1.0..1.0) if rand < rate
