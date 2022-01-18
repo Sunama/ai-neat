@@ -49,15 +49,15 @@ module Ai
 
       def flatten_genes=(genes)
         (0..(@network.layers.count - 2)).each do |i|
-          @network.layers[i].nodes.each do |node|
-            node.weights.each do |weight|
-              weight = genes.first
+          (0..@network.layers[i].nodes.count - 1).each do |w|
+            (0..@network.layers[i].nodes[w].weights.count - 1).each do |e|
+              @network.layers[i].nodes[w].weights[e] = genes.first
               genes.shift
             end
           end
-
-          @network.layers[i].bias.weights.each do |weight|
-            weight = genes.first
+    
+          (0..@network.layers[i].bias.weights.count - 1).each do |w|
+            @network.layers[i].bias.weights[w] = genes.first
             genes.shift
           end
         end
