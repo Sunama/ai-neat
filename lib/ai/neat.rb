@@ -116,7 +116,7 @@ module Ai
           creature.fitness = (creature.score ** 2) / sum
         end
 
-        @old_creatures.sort!{ |creature| creature.fitness }
+        @old_creatures = @old_creatures.sort_by{ |creature| - creature.fitness }
 
         index = 0
         r = rand
