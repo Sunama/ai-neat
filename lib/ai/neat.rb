@@ -39,7 +39,6 @@ module Ai
 
       def crossover
         (0..@population_size - 1).each do |i|
-          @old_creatures = @creatures.clone
           parent_x = pick_creature
           parent_y = pick_creature
 
@@ -59,6 +58,8 @@ module Ai
       end
 
       def do_gen
+        @old_creatures = @creatures.clone
+        
         crossover
         mutate
         @generation += 1
