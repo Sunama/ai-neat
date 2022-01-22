@@ -43,7 +43,7 @@ module Ai
         end_index = (rand * (genes_x.count - start_index + 2)).to_i + start_index + 1
         cut_genes = genes_x[start_index..end_index]
 
-        genes = genes_y.clone
+        genes = genes_y.map{ | gene| gene.dup }
 
         genes.slice!(start_index..end_index)
         genes.concat(cut_genes)
@@ -53,7 +53,7 @@ module Ai
     end
 
     def self.mutate(method, genes, rate)
-      genes = genes.clone
+      genes = genes.map{ | gene| gene.dup }
 
       case method.to_sym
       when :random

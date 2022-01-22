@@ -96,7 +96,13 @@ RSpec.describe Ai::Neat do
 
         first_score = scores[neat.best_creature] if gen == 0
 
+        flatten_genes = neat.creatures.first.flatten_genes.dup
+
         neat.do_gen
+
+        expect(neat.creatures.first.flatten_genes).to_not eq flatten_genes
+        expect(neat.creatures.first.flatten_genes).to_not eq neat.old_creatures.first.flatten_genes
+        expect(neat.old_creatures.first.flatten_genes).to eq flatten_genes
       end
 
       expect(scores[neat.best_creature]).to be > first_score
